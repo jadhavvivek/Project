@@ -2,10 +2,12 @@ package com.example.Project_Status.Controller;
 
 
 import java.util.List;
+
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,8 @@ import com.example.Project_Status.Model.ProjectStatus;
 import com.example.Project_Status.Service.ProjectStatusService;
 import com.example.Project_Status.repository.ProjectStatusRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class ProjectStatusController {
 	@Autowired
@@ -25,12 +29,21 @@ public class ProjectStatusController {
 	
 	
 	@PostMapping("/project_status")
-    public String addStatusInfo(@RequestBody ProjectStatus projectstatus) {
+    public String addStatusInfo(@Valid @RequestBody ProjectStatus projectstatus) {
 	projectstatusservice.addStatusInfo(projectstatus);
 	return "success";
 	}
 	
-	
+	/*
+	@PostMapping("/project_status")
+    public ResponseEntity<String> addStatusInfo(@Valid @RequestBody ProjectStatus projectstatus, BindingResult result) {
+		if(result.hasErrors()) {
+			return ResponseEntity.badRequest().body("Validation error");
+		}
+		projectstatusservice.addStatusInfo(projectstatus);
+		return ResponseEntity.ok("success");
+	}
+	*/
 @GetMapping("/project_status")
 public List<ProjectStatus>getAllStatus(){
 return projectstatusservice.getAllStatus();
@@ -40,8 +53,8 @@ return projectstatusservice.getAllStatus();
 
 
 @GetMapping("/project_status/{projectStatusId}")
-public ResponseEntity<ProjectStatus> getStatusById(@PathVariable int projectStatusId) {
-    Optional<ProjectStatus> projectStatus = projectstatusservice.getStatusById(projectStatusId);
+public ResponseEntity<ProjectStatus> getProjectStatusById(@PathVariable int projectStatusId) {
+    Optional<ProjectStatus> projectStatus = projectstatusservice.getProjectStatusById(projectStatusId);
     if (projectStatus.isPresent()) {
         return ResponseEntity.ok(projectStatus.get());
     } else {

@@ -1,6 +1,7 @@
 package com.example.Project_Status.Service;
 
 import java.util.List;
+
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public List<ProjectStatus>getAllStatus(){
 }
 
 
-public Optional<ProjectStatus> getStatusById(int projectStatusId) {
+public Optional<ProjectStatus> getProjectStatusById(int projectStatusId) {
     return projectstatusrepository.findById(projectStatusId);
 }
 

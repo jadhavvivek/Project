@@ -16,6 +16,8 @@ import com.example.Project_Status.Model.Status;
 import com.example.Project_Status.Service.StatusService;
 import com.example.Project_Status.repository.StatusRepository;
 
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -27,7 +29,7 @@ public class StatusController {
 	
 	
 	@PostMapping("/status")
-    public String getStatus(@RequestBody Status status) {
+    public String getStatus(@Valid @RequestBody Status status) {
     statusservice.getStatus(status);
 	return "success";
 	}
@@ -42,8 +44,13 @@ return statusservice.getAllStatus();
 	
 	
 	@GetMapping("/status/{StatusId}")
-	public Optional<Status> getStatusById(@PathVariable int StatusId) {
-	return statusservice.getStatusById(StatusId);
+	public ResponseEntity<Status> getStatusById(@PathVariable int StatusId) {
+	Optional<Status>status=statusservice.getStatusById(StatusId);
+	 if (status.isPresent()) {
+	        return ResponseEntity.ok(status.get());
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 	
 	
